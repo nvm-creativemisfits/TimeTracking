@@ -257,34 +257,31 @@ window.TrelloPowerUp.initialize({
   'card-buttons': function (t, options) {
     return [
       {
-        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png', // Replace with your Log In icon URL
+        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png',
         text: 'Log In',
         callback: function (t) {
-          return t.card('id', 'name').then(function (card) {
-            const cardId = card.id;
-            return t.member('username').then(function (member) {
-              const username = member.username;
-              postCommentToBackend(cardId, username, 'logged in');
-            });
+          console.log('Log In button clicked!');
+          return t.alert({
+            message: 'Log In button pressed!',
+            duration: 5,
           });
         },
       },
       {
-        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-logout.png', // Replace with your Log Out icon URL
+        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png',
         text: 'Log Out',
         callback: function (t) {
-          return t.card('id', 'name').then(function (card) {
-            const cardId = card.id;
-            return t.member('username').then(function (member) {
-              const username = member.username;
-              postCommentToBackend(cardId, username, 'logged out');
-            });
+          console.log('Log Out button clicked!');
+          return t.alert({
+            message: 'Log Out button pressed!',
+            duration: 5,
           });
         },
       },
     ];
   },
 });
+
 
 // Function to post a comment to the backend securely
 async function postCommentToBackend(cardId, username, action) {
