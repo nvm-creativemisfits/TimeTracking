@@ -1,0 +1,16 @@
+{
+  "id": "47efe2ca-5c81-49dc-a40f-42f2bb8db954",  // Use a UUID or any unique identifier
+  "name": "Trello Time Logger - NVM",
+  "icon": "https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png", // Replace with your custom icon URL
+  "author": "Matthew Sanchez",
+  "description": "A Power-Up for logging time actions and sending data to Google Sheets.",
+  "capabilities": {
+    "card-buttons": true
+  },
+  "connectors": {
+    "iframeConnector": {
+      "url": "https://nvm-creativemisfits.github.io/TrelloTimeTracking_v1/index.html" // Replace with your GitHub Pages URL
+    }
+  },
+  "permissions": ["read", "write"]
+}
