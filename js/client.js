@@ -253,6 +253,8 @@ var cardButtonCallback = function(t){
 import { ENV } from './env.js';
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
+console.log('Client.js loaded successfully!');
+
 window.TrelloPowerUp.initialize({
   'card-buttons': function (t, options) {
     return [
@@ -261,10 +263,7 @@ window.TrelloPowerUp.initialize({
         text: 'Log In',
         callback: function (t) {
           console.log('Log In button clicked!');
-          return t.alert({
-            message: 'Log In button pressed!',
-            duration: 5,
-          });
+          return t.alert({ message: 'Log In button pressed!', duration: 5 });
         },
       },
       {
@@ -272,15 +271,13 @@ window.TrelloPowerUp.initialize({
         text: 'Log Out',
         callback: function (t) {
           console.log('Log Out button clicked!');
-          return t.alert({
-            message: 'Log Out button pressed!',
-            duration: 5,
-          });
+          return t.alert({ message: 'Log Out button pressed!', duration: 5 });
         },
       },
     ];
   },
 });
+
 
 
 // Function to post a comment to the backend securely
