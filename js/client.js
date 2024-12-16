@@ -254,7 +254,7 @@ import { ENV } from './env.js';
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
 TrelloPowerUp.initialize({
-'card-buttons': function (t, options) {
+  'card-buttons': function (t, options) {
     return [
       {
         icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png', // Replace with your Log In icon URL
@@ -264,9 +264,7 @@ TrelloPowerUp.initialize({
             const cardId = card.id;
             return t.member('username').then(function (member) {
               const username = member.username;
-
-              // Call the function to add the login comment
-              postComment(cardId, username, 'logged in', t);
+              postCommentToBackend(cardId, username, 'logged in');
             });
           });
         },
@@ -279,9 +277,7 @@ TrelloPowerUp.initialize({
             const cardId = card.id;
             return t.member('username').then(function (member) {
               const username = member.username;
-
-              // Call the function to add the logout comment
-              postComment(cardId, username, 'logged out', t);
+              postCommentToBackend(cardId, username, 'logged out');
             });
           });
         },
@@ -290,96 +286,46 @@ TrelloPowerUp.initialize({
   },
 });
 
-// Function to Post Log In or Log Out Comment
-async function postComment(cardId, username, action, t) {
-  const TRELLO_API_KEY = ENV.TRELLO_API_KEY;
-  const TRELLO_TOKEN = ENV.TRELLO_TOKEN;
+// Function to post a comment to the backend securely
+async function postCommentToBackend(cardId, username, action) {
+  const backendUrl = 'https://trellotimetracking-backend-server.onrender.com'; // Replace with your Render backend URL
 
+  // Generate the timestamp
   const now = new Date();
-  const timeZoneOffset = -7; // Adjust for your desired time zone (e.g., UTC-5 for EST)
-  const adjustedTime = new Date(now.getTime() + timeZoneOffset * 3600000);
-
-  const formattedTime = adjustedTime.toLocaleTimeString('en-US', {
+  const formattedTime = now.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
   });
-
-  const formattedDate = adjustedTime.toLocaleDateString('en-US', {
+  const formattedDate = now.toLocaleDateString('en-US', {
     weekday: 'long',
-    month: 'numeric',
+    month: 'long',
     day: 'numeric',
     year: 'numeric',
   });
-
   const timestamp = `${formattedTime} - ${formattedDate}`;
 
-  // Fetch card and board details
-  const cardResponse = await fetch(
-    `https://api.trello.com/1/cards/${cardId}?fields=name,url,idBoard&key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`
-  );
-  const cardData = await cardResponse.json();
-  const cardName = cardData.name;
-  const cardUrl = cardData.url;
-
-  // Fetch the board name
-  const boardResponse = await fetch(
-    `https://api.trello.com/1/boards/${cardData.idBoard}?fields=name&key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`
-  );
-  const boardData = await boardResponse.json();
-  const boardName = boardData.name;
-
-  // Add comment to the card
-  const commentText = `${username} ${action} at [${timestamp}]`;
-  const commentResponse = await fetch(
-    `https://api.trello.com/1/cards/${cardId}/actions/comments?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text: commentText }),
-    }
-  );
-
-  if (commentResponse.ok) {
-    console.log(`${action} comment added successfully!`);
-
-    // Send data to Google Sheets
-    postToGoogleSheet(username, action, timestamp, boardName, cardName, cardUrl);
-  } else {
-    console.error(`Failed to add ${action} comment. Response status:`, commentResponse.status);
-  }
-}
-
-// Function to post data to Google Sheets
-async function postToGoogleSheet(username, action, timestamp, boardName, cardName, cardUrl) {
-  const googleSheetWebhookURL = ENV.GOOGLE_SHEETS_WEBHOOK_URL;
-
-  const payload = {
-    username: username,
-    action: action,
-    timestamp: timestamp,
-    boardName: boardName,
-    cardName: cardName,
-    cardUrl: cardUrl,
-  };
+  const comment = `${username} ${action} at [${timestamp}]`;
 
   try {
-    const response = await fetch(googleSheetWebhookURL, {
+    // Send data to the backend for Trello comment and Google Sheets logging
+    const response = await fetch(`${backendUrl}/trello/comment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        cardId: cardId,
+        comment: comment,
+      }),
     });
 
     if (response.ok) {
-      console.log(`Data successfully sent to Google Sheets for ${action}`);
+      console.log(`Successfully posted ${action} comment and logged data.`);
     } else {
-      console.error(`Failed to send data to Google Sheets: ${response.status}`);
+      console.error('Failed to post comment and log data via backend.');
     }
   } catch (error) {
-    console.error('Error posting to Google Sheets:', error);
+    console.error('Error communicating with backend:', error.message);
   }
 }
