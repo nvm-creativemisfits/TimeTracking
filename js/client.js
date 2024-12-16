@@ -253,7 +253,7 @@ var cardButtonCallback = function(t){
 import { ENV } from './env.js';
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
-TrelloPowerUp.initialize({
+window.TrelloPowerUp.initialize({
   'card-buttons': function (t, options) {
     return [
       {
