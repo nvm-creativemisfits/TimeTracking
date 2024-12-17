@@ -5,7 +5,7 @@ const Promise = TrelloPowerUp.Promise;
 
 console.log('Client.js loaded successfully!');
 
-// Replace import with direct constant for environment variable
+// Environment variable with server URL
 const ENV = {
   SERVER_URL: 'https://trellotimetracking-backend-server.onrender.com' // Replace with your Render backend URL
 };
@@ -22,14 +22,12 @@ TrelloPowerUp.initialize({
           const card = await t.card('id', 'name');
           const user = await t.member('fullName'); // Get Trello member name
 
-          // Action example: Logged In
+          // Log the time to backend
           const action = 'Logged In';
-
-          // Log to Trello and Google Sheets
           await postCommentToBackend(card.id, card.name, user.fullName, action);
 
           t.alert({
-            message: 'Time logged and sent to Google Sheets successfully!',
+            message: 'Time logged and sent successfully!',
             duration: 5
           });
         } catch (err) {
@@ -44,43 +42,27 @@ TrelloPowerUp.initialize({
   }
 });
 
-// Function to post a comment to Trello and Google Sheets via backend
+// Function to post comment to backend
 async function postCommentToBackend(cardId, cardName, username, action) {
-  const backendTrelloUrl = `${ENV.SERVER_URL}/trello/comment`;
-  const backendGoogleUrl = `${ENV.SERVER_URL}/google/sheets`;
+  const backendUrl = `${ENV.SERVER_URL}/trello/comment`;
 
-  // Generate the timestamp
+  // Create timestamp
   const now = new Date();
-  const formattedTime = now.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
-  const formattedDate = now.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-  const timestamp = `${formattedTime} - ${formattedDate}`;
+  const timestamp = `${now.toLocaleTimeString()} - ${now.toLocaleDateString()}`;
   const comment = `${username} ${action} at [${timestamp}]`;
 
   try {
-    // Post comment to Trello backend
-    const trelloResponse = await fetch(backendTrelloUrl, {
+    await fetch(backendUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        cardId: cardId,
-        comment: comment,
-      }),
+      body: JSON.stringify({ cardId, comment }),
     });
+    console.log('Successfully posted comment to backend.');
+  } catch (error) {
+    console.error('Error posting to backend:', error.message);
+  }
+}
 
-    if (!trelloResponse.ok) {
-      console.error('Failed to post comment to Trello:', await trelloResponse.text());
-    } else {
-      console.log(`Successfully posted ${action} comment to Trello.`);
-    }
 
     // Send data to Google Sheets backend
     const sheetsPayload = {
