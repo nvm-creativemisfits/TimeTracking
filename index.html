@@ -2,32 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello Power-Up - Time Tracking</title>
-    <link rel="icon" href="./favicon.ico" />
+    <title>Trello Power-Up</title>
   </head>
   <body>
     <h1>Time Tracking Power-Up</h1>
-
-    <p>This is the Trello Power-Up HTML connector. If you see this, your Power-Up iframe is loaded correctly.</p>
-    <p>Ensure all Power-Up scripts are running successfully.</p>
+    <p>This is the Trello Power-Up HTML connector. Your Power-Up iframe is loaded correctly.</p>
 
     <!-- Trello Power-Up Library -->
     <script src="https://p.trellocdn.com/power-up.min.js"></script>
 
-    <!-- Environment Configuration -->
-    <script type="module" src="./js/env.js"></script>
-
-    <!-- Client Script -->
-    <script type="module">
-      // Ensure TrelloPowerUp is globally available before running client.js
-      import { setupClient } from './js/client.js';
-
-      if (window.TrelloPowerUp) {
-        setupClient(window.TrelloPowerUp);
-      } else {
-        console.error('TrelloPowerUp library failed to load.');
-      }
-    </script>
+    <!-- Include client.js as a regular script -->
+    <script src="./js/client.js"></script>
   </body>
 </html>
