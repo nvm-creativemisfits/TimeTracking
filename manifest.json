@@ -8,9 +8,9 @@
     "card-buttons": true
   },
   "connectors": {
-    "iframeConnector": {
-      "url": "https://nvm-creativemisfits.github.io/TimeTracking/"
-    }
-  },
+  "iframeConnector": {
+    "url": "https://nvm-creativemisfits.github.io/TimeTracking/"
+  }
+},
   "permissions": ["read", "write"]
 }
