@@ -9,7 +9,7 @@
   },
   "connectors": {
     "iframeConnector": {
-      "url": "https://nvm-creativemisfits.github.io/TimeTracking/" 
+      "url": "https://timetracking-auxd.onrender.com" 
     }
   },
   "permissions": ["read", "write"]
