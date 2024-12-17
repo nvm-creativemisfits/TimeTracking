@@ -19,6 +19,15 @@
     <script type="module" src="./js/env.js"></script>
 
     <!-- Client Script -->
-    <script type="module" src="./js/client.js"></script>
+    <script type="module">
+      // Ensure TrelloPowerUp is globally available before running client.js
+      import { setupClient } from './js/client.js';
+
+      if (window.TrelloPowerUp) {
+        setupClient(window.TrelloPowerUp);
+      } else {
+        console.error('TrelloPowerUp library failed to load.');
+      }
+    </script>
   </body>
 </html>
