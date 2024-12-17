@@ -9,7 +9,7 @@
   },
   "connectors": {
   "iframeConnector": {
-    "url": "https://trellotimetracking-backend-server.onrender.com"
+    "url": "https://timetracking-auxd.onrender.com"
   }
 },
   "permissions": ["read", "write"]
