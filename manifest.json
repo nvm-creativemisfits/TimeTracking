@@ -1,16 +1,16 @@
 {
-  "id": "47efe2ca-5c81-49dc-a40f-42f2bb8db954", 
+  "id": "47efe2ca-5c81-49dc-a40f-42f2bb8db954",
   "name": "Trello Time Logger - NVM",
   "icon": "https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png",
   "author": "Matthew Sanchez",
-  "description": "A Power-Up for logging time actions and sending data to Google Sheets.",
+  "description": "A Power-Up for logging time actions and sending data to Trello.",
   "capabilities": {
     "card-buttons": true
   },
   "connectors": {
-  "iframeConnector": {
-    "url": "https://timetracking-auxd.onrender.com"
-  }
-},
+    "iframeConnector": {
+      "url": "https://timetracking-auxd.onrender.com" 
+    }
+  },
   "permissions": ["read", "write"]
 }
