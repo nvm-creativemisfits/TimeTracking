@@ -1,9 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
 const axios = require('axios');
-
 
 const app = express();
 app.use(cors());
@@ -29,7 +27,6 @@ app.post('/trello/comment', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
