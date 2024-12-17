@@ -7,7 +7,7 @@ console.log('Client.js loaded successfully!');
 
 // Environment variable with server URL
 const ENV = {
-  SERVER_URL: 'https://trellotimetracking-backend-server.onrender.com' // Replace with your Render backend URL
+  SERVER_URL: 'https://timetracking-auxd.onrender.com' // Replace with your Render backend URL
 };
 
 // Initialize Trello Power-Up
