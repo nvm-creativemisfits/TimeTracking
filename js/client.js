@@ -7,14 +7,14 @@ console.log('Client.js loaded successfully!');
 
 // Environment variable with server URL
 const ENV = {
-  SERVER_URL: 'https://timetracking-auxd.onrender.com' // Replace with your Render backend URL
+  SERVER_URL: 'https://timetracking-auxd.onrender.com' // Replace this if needed
 };
 
 // Initialize Trello Power-Up
 TrelloPowerUp.initialize({
   'card-buttons': function (t) {
     return [{
-      icon: 'https://example.com/icon.png', // Replace with your actual icon URL
+      icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png', // Replace with your actual icon URL
       text: 'Log Time',
       callback: function (t) {
         logTime(t); // Call the async function
@@ -56,11 +56,16 @@ async function postCommentToBackend(cardId, cardName, username, action) {
   const comment = `${username} ${action} at [${timestamp}]`;
 
   try {
-    await fetch(backendUrl, {
+    const response = await fetch(backendUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cardId, comment }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
+    }
+
     console.log('Successfully posted comment to Trello backend.');
   } catch (error) {
     console.error('Error posting to backend:', error.message);
