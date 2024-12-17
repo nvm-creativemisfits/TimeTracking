@@ -1,42 +1,54 @@
-const TrelloPowerUp = window.TrelloPowerUp;
+/* global TrelloPowerUp */
 
-console.log("Client.js loaded successfully!");
+console.log('Client.js loaded successfully!');
 
-// Initialize Trello Power-Up client
-window.TrelloPowerUp.initialize({
-  "card-buttons": function (t) {
+// Initialize Trello Power-Up
+const Promise = TrelloPowerUp.Promise;
+
+TrelloPowerUp.initialize({
+  'card-buttons': function (t) {
     return [
       {
-        // Text that appears on the button
-        text: "Log Time", 
+        // The button's name
+        text: 'Add Comment',
+        callback: async function (t) {
+          const card = await t.card('id');
+          const comment = 'Test comment from Power-Up';
 
-        // Icon URL (must be a valid URL)
-        icon: "https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png",
+          try {
+            // Post to backend API
+            const response = await fetch(
+              'https://timetracking-auxd.onrender.com/trello/comment',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  cardId: card.id,
+                  comment: comment,
+                }),
+              }
+            );
 
-        // Callback function when button is clicked
-        callback: function (t) {
-          return t.card("id", "name").then(function (card) {
-            console.log("Adding comment to card:", card.name);
-
-            // Call the backend API to add a comment
-            return fetch("https://timetracking-auxd.onrender.com/trello/comment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                cardId: card.id,
-                comment: `Time Log added for card: ${card.name}`,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                console.log("Comment added successfully:", data);
-                alert("Time log successfully added!");
-              })
-              .catch((error) => {
-                console.error("Failed to add comment:", error);
-                alert("Failed to add time log.");
+            if (response.ok) {
+              t.alert({
+                message: 'Comment added successfully!',
+                duration: 5,
               });
-          });
+            } else {
+              t.alert({
+                message: 'Failed to add comment. Check server logs.',
+                duration: 5,
+              });
+            }
+          } catch (error) {
+            console.error('Error posting to backend:', error);
+            t.alert({
+              message: 'Network error while posting comment.',
+              duration: 5,
+            });
+          }
         },
       },
     ];
