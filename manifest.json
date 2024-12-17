@@ -9,7 +9,7 @@
   },
   "connectors": {
   "iframeConnector": {
-    "url": "https://nvm-creativemisfits.github.io/TimeTracking/"
+    "url": "https://trellotimetracking-backend-server.onrender.com"
   }
 },
   "permissions": ["read", "write"]
