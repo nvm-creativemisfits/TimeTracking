@@ -17,30 +17,35 @@ TrelloPowerUp.initialize({
     return [{
       icon: 'https://example.com/icon.png', // Replace with your actual icon URL
       text: 'Log Time',
-      callback: async function (t) {
-        try {
-          const card = await t.card('id', 'name');
-          const user = await t.member('fullName'); // Get Trello member name
-
-          // Log the time to backend
-          const action = 'Logged In';
-          await postCommentToBackend(card.id, card.name, user.fullName, action);
-
-          t.alert({
-            message: 'Time logged and sent successfully!',
-            duration: 5
-          });
-        } catch (err) {
-          console.error('Error:', err);
-          t.alert({
-            message: 'Failed to log time. Please try again.',
-            duration: 5
-          });
-        }
+      callback: function (t) {
+        logTime(t); // Call the async function
       }
     }];
   }
 });
+
+// Async function to log time
+async function logTime(t) {
+  try {
+    const card = await t.card('id', 'name');
+    const user = await t.member('fullName'); // Get Trello member name
+
+    // Log the time to backend
+    const action = 'Logged In';
+    await postCommentToBackend(card.id, card.name, user.fullName, action);
+
+    t.alert({
+      message: 'Time logged and sent successfully!',
+      duration: 5
+    });
+  } catch (err) {
+    console.error('Error:', err);
+    t.alert({
+      message: 'Failed to log time. Please try again.',
+      duration: 5
+    });
+  }
+}
 
 // Function to post comment to backend
 async function postCommentToBackend(cardId, cardName, username, action) {
@@ -62,6 +67,7 @@ async function postCommentToBackend(cardId, cardName, username, action) {
     console.error('Error posting to backend:', error.message);
   }
 }
+
 
 
     // Send data to Google Sheets backend
