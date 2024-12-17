@@ -9,46 +9,36 @@ TrelloPowerUp.initialize({
   'card-buttons': function (t) {
     return [
       {
-        // The button's name
-        text: 'Add Comment',
-        callback: async function (t) {
-          const card = await t.card('id');
-          const comment = 'Test comment from Power-Up';
-
-          try {
-            // Post to backend API
-            const response = await fetch(
-              'https://timetracking-auxd.onrender.com/trello/comment',
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  cardId: card.id,
-                  comment: comment,
-                }),
-              }
-            );
-
-            if (response.ok) {
-              t.alert({
-                message: 'Comment added successfully!',
-                duration: 5,
+        text: 'Log Time',
+        icon: 'https://your-icon-url.com/icon.png',
+        callback: function (t) {
+          return t.card('id', 'name').then(function (card) {
+            return fetch('https://your-render-app.onrender.com/trello/comment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                cardId: card.id,
+                comment: `Time Log added for card: ${card.name}`,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log('Comment added successfully:', data);
+                t.alert({
+                  message: 'Time log successfully added!',
+                  duration: 5,
+                });
+              })
+              .catch((error) => {
+                console.error('Error adding comment:', error);
+                t.alert({
+                  message: 'Failed to add time log.',
+                  duration: 5,
+                });
               });
-            } else {
-              t.alert({
-                message: 'Failed to add comment. Check server logs.',
-                duration: 5,
-              });
-            }
-          } catch (error) {
-            console.error('Error posting to backend:', error);
-            t.alert({
-              message: 'Network error while posting comment.',
-              duration: 5,
-            });
-          }
+          });
         },
       },
     ];
