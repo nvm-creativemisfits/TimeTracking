@@ -251,6 +251,7 @@ var cardButtonCallback = function(t){
 };
 
 import { ENV } from './env.js';
+console.log('Server URL:', ENV.SERVER_URL);
 
 // We need to call initialize to get all of our capability handles set up and registered with Trello
 console.log('Client.js loaded successfully!');
