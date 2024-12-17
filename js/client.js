@@ -255,33 +255,40 @@ import { ENV } from './env.js';
 // We need to call initialize to get all of our capability handles set up and registered with Trello
 console.log('Client.js loaded successfully!');
 
-window.TrelloPowerUp.initialize({
-  'card-buttons': function (t, options) {
-    console.log('Card buttons initialized!');
-    return [
-      {
-        icon: 'https://nvm-creativemisfits.github.io/TimeTracking/icon.png', // Replace with a valid icon URL
-        text: 'Log In',
-        callback: function (t) {
-          return t.alert({
-            message: 'Log In button clicked!',
-            duration: 5
+const TrelloPowerUp = window.TrelloPowerUp;
+
+TrelloPowerUp.initialize({
+  'card-buttons': function (t, opts) {
+    return [{
+      icon: 'https://example.com/icon.png',
+      text: 'Log Time',
+      callback: function (t) {
+        return t.card('id', 'name').then(card => {
+          // Send a POST request to the Render server
+          fetch('https://trellotimetracking-backend-server.onrender.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              cardId: card.id,
+              user: opts.context.user, // Trello user context
+              action: 'Logged In'
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.message); // Success response
+            alert('Time logged successfully!');
+          })
+          .catch(err => {
+            console.error('Error:', err);
+            alert('Failed to log time. Please try again.');
           });
-        }
-      },
-      {
-        icon: 'https://nvm-creativemisfits.github.io/TimeTracking/icon.png', // Replace with a valid icon URL
-        text: 'Log Out',
-        callback: function (t) {
-          return t.alert({
-            message: 'Log Out button clicked!',
-            duration: 5
-          });
-        }
+        });
       }
-    ];
+    }];
   }
 });
+
 
 
 
