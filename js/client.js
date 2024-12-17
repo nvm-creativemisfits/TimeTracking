@@ -257,26 +257,32 @@ console.log('Client.js loaded successfully!');
 
 window.TrelloPowerUp.initialize({
   'card-buttons': function (t, options) {
+    console.log('Card buttons initialized!');
     return [
       {
-        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png',
+        icon: 'https://nvm-creativemisfits.github.io/TimeTracking/icon.png', // Replace with a valid icon URL
         text: 'Log In',
         callback: function (t) {
-          console.log('Log In button clicked!');
-          return t.alert({ message: 'Log In button pressed!', duration: 5 });
-        },
+          return t.alert({
+            message: 'Log In button clicked!',
+            duration: 5
+          });
+        }
       },
       {
-        icon: 'https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png',
+        icon: 'https://nvm-creativemisfits.github.io/TimeTracking/icon.png', // Replace with a valid icon URL
         text: 'Log Out',
         callback: function (t) {
-          console.log('Log Out button clicked!');
-          return t.alert({ message: 'Log Out button pressed!', duration: 5 });
-        },
-      },
+          return t.alert({
+            message: 'Log Out button clicked!',
+            duration: 5
+          });
+        }
+      }
     ];
-  },
+  }
 });
+
 
 
 
