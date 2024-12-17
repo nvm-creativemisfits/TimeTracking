@@ -1,6 +1,6 @@
 {
   "id": "47efe2ca-5c81-49dc-a40f-42f2bb8db954",
-  "name": "Trello Time Logger - NVM",
+  "name": "Time Tracking Power-Up",
   "icon": "https://newvisualmedia.com/wp-content/uploads/2024/12/hour-glass-login.png",
   "author": "Matthew Sanchez",
   "description": "A Power-Up for logging time actions and sending data to Trello.",
@@ -9,7 +9,7 @@
   },
   "connectors": {
     "iframeConnector": {
-      "url": "https://timetracking-auxd.onrender.com" 
+      "url": "https://nvm-creativemisfits.github.io/TimeTracking/" 
     }
   },
   "permissions": ["read", "write"]
