@@ -10,27 +10,24 @@ app.use(bodyParser.json());
 app.post('/trello/comment', async (req, res) => {
   const { cardId, comment } = req.body;
 
-  const apiKey = process.env.TRELLO_API_KEY;
-  const apiToken = process.env.TRELLO_API_TOKEN;
-
-  if (!apiKey || !apiToken) {
-    return res.status(500).json({ error: 'Trello API credentials are missing.' });
-  }
-
-  const url = `https://api.trello.com/1/cards/${cardId}/actions/comments?key=${apiKey}&token=${apiToken}&text=${encodeURIComponent(comment)}`;
-
   try {
-    const response = await fetch(url, { method: 'POST' });
-    if (!response.ok) {
-      throw new Error(`Trello API responded with status ${response.status}`);
-    }
-    const data = await response.json();
-    res.json(data);
+    const response = await axios.post(
+      `https://api.trello.com/1/cards/${cardId}/actions/comments`,
+      { text: comment },
+      {
+        params: {
+          key: process.env.TRELLO_API_KEY,
+          token: process.env.TRELLO_API_TOKEN,
+        },
+      }
+    );
+    res.json({ success: true, data: response.data });
   } catch (error) {
-    console.error('Error posting comment to Trello:', error);
-    res.status(500).json({ error: 'Failed to post comment to Trello.' });
+    console.error('Error posting to Trello:', error.message);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
