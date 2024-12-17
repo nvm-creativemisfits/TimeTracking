@@ -67,30 +67,3 @@ async function postCommentToBackend(cardId, cardName, username, action) {
     console.error('Error posting to backend:', error.message);
   }
 }
-
-
-
-    // Send data to Google Sheets backend
-    const sheetsPayload = {
-      boardName: 'Your Trello Board Name', // Replace with dynamic board name logic if needed
-      cardName: cardName,
-      userName: username,
-      action: action,
-      timestamp: timestamp,
-    };
-
-    const sheetsResponse = await fetch(backendGoogleUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sheetsPayload),
-    });
-
-    if (!sheetsResponse.ok) {
-      console.error('Failed to send data to Google Sheets:', await sheetsResponse.text());
-    } else {
-      console.log('Successfully sent data to Google Sheets.');
-    }
-  } catch (error) {
-    console.error('Error during backend requests:', error.message);
-  }
-}
