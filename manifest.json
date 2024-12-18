@@ -9,7 +9,7 @@
   },
   "connectors": {
     "iframeConnector": {
-      "url": "https://timetracking-auxd.onrender.com" 
+      "url": "https://timetracking-auxd.onrender.com"
     }
   },
   "permissions": ["read", "write"]
