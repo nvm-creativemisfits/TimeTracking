@@ -40,6 +40,10 @@ app.post('/trello/comment', async (req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
+// Default GET route for the root path
+app.get('/', (req, res) => {
+  res.send('Time Tracking Power-Up Server is running.');
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
